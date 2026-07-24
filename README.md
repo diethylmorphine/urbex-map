@@ -1,2 +1,2 @@
-# urbex-map
-telegram map for urbex
+# interactive urbex map
+interactive map for urben explorers
