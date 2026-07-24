@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>URBEX — New Update</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+
+background:#070707;
+color:white;
+overflow-x:hidden;
+
+}
+
+/* Animated background */
+
+body::before{
+
+content:"";
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,120,.08),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(0,255,120,.08),transparent 30%),
+linear-gradient(#111 1px,transparent 1px),
+linear-gradient(90deg,#111 1px,transparent 1px);
+
+background-size:
+100% 100%,
+100% 100%,
+40px 40px,
+40px 40px;
+
+animation:gridMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes gridMove{
+
+from{
+
+background-position:
+0 0,
+0 0,
+0 0,
+0 0;
+
+}
+
+to{
+
+background-position:
+0 0,
+0 0,
+40px 40px,
+40px 40px;
+
+}
+
+}
+
+.hero{
+
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:30px;
+
+}
+
+.hero h1{
+
+font-size:65px;
+
+color:#37ff84;
+
+text-shadow:0 0 25px #37ff84;
+
+margin-bottom:20px;
+
+}
+
+.hero p{
+
+font-size:22px;
+color:#ddd;
+max-width:700px;
+margin:auto;
+
+}
+
+.button{
+
+margin-top:40px;
+
+display:inline-block;
+
+padding:16px 38px;
+
+border:2px solid #37ff84;
+
+border-radius:50px;
+
+text-decoration:none;
+
+color:#37ff84;
+
+transition:.3s;
+
+font-weight:bold;
+
+}
+
+.button:hover{
+
+background:#37ff84;
+color:black;
+box-shadow:0 0 30px #37ff84;
+
+}
+
+section{
+
+padding:90px 10%;
+
+}
+
+.title{
+
+font-size:42px;
+
+margin-bottom:45px;
+
+color:#37ff84;
+
+text-align:center;
+
+}
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+
+gap:30px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(12px);
+
+padding:30px;
+
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.1);
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 0 30px rgba(55,255,132,.4);
+
+}
+
+.card h2{
+
+margin-bottom:15px;
+color:#37ff84;
+
+}
+
+.card ul{
+
+padding-left:20px;
+line-height:1.8;
+
+}
+
+.progress{
+
+max-width:700px;
+margin:auto;
+
+}
+
+.bar{
+
+height:18px;
+
+background:#222;
+
+border-radius:100px;
+
+overflow:hidden;
+
+margin-top:20px;
+
+}
+
+.fill{
+
+height:100%;
+
+width:73%;
+
+background:#37ff84;
+
+box-shadow:0 0 20px #37ff84;
+
+animation:pulse 2s infinite;
+
+}
+
+@keyframes pulse{
+
+50%{
+
+opacity:.6;
+
+}
+
+}
+
+.classified{
+
+margin-top:40px;
+
+background:#111;
+
+border:2px dashed #37ff84;
+
+padding:40px;
+
+font-size:32px;
+
+letter-spacing:6px;
+
+text-align:center;
+
+filter:blur(5px);
+
+transition:.4s;
+
+cursor:pointer;
+
+}
+
+.classified:hover{
+
+filter:blur(0);
+
+box-shadow:0 0 30px #37ff84;
+
+}
+
+footer{
+
+padding:60px;
+
+text-align:center;
+
+color:#777;
+
+}
+
+.lang{
+
+position:fixed;
+
+right:20px;
+
+top:20px;
+
+display:flex;
+
+gap:10px;
+
+z-index:100;
+
+}
+
+.lang button{
+
+background:#111;
+
+color:white;
+
+border:1px solid #37ff84;
+
+padding:10px 18px;
+
+cursor:pointer;
+
+border-radius:30px;
+
+transition:.3s;
+
+}
+
+.lang button:hover{
+
+background:#37ff84;
+
+color:black;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="lang">
+
+<button onclick="setLang('en')">EN</button>
+
+<button onclick="setLang('ru')">RU</button>
+
+</div>
+
+<div class="hero">
+
+<div>
+
+<h1>URBEX</h1>
+
+<p id="subtitle">
+Something big is hidden.<br>
+The next update is closer than you think.
+</p>
+
+<a href="#update" class="button" id="btn">
+Reveal Update
+</a>
+
+</div>
+
+</div>
+
+<section id="update">
+
+<h2 class="title" id="title1">
+What's Coming
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h2 id="mapTitle">Interactive Map</h2>
+
+<ul id="mapList">
+
+<li>Better performance</li>
+
+<li>Hidden locations</li>
+
+<li>Community markers</li>
+
+<li>Improved UI</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2 id="communityTitle">Community</h2>
+
+<ul id="communityList">
+
+<li>Explorer profiles</li>
+
+<li>Teams</li>
+
+<li>Comments</li>
+
+<li>Shared discoveries</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2 id="secretTitle">More Secrets</h2>
+
+<p id="secretText">
+
+Some features are still classified...
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<h2 class="title" id="progressTitle">
+
+Development Progress
+
+</h2>
+
+<div class="progress">
+
+<h3 style="text-align:center;">73%</h3>
+
+<div class="bar">
+
+<div class="fill"></div>
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<h2 class="title" id="releaseTitle">
+
+Release
+
+</h2>
+
+<div style="text-align:center;font-size:40px;color:#37ff84;">
+
+?? / ?? / 2026
+
+</div>
+
+<p style="text-align:center;margin-top:15px;color:#888;" id="releaseText">
+
+When it's ready.
+
+</p>
+
+<div class="classified">
+
+ACCESS DENIED
+
+</div>
+
+</section>
+
+<footer>
+
+Explore • Discover • Respect
+
+<br><br>
+
+© 2026 URBEX
+
+</footer>
+
+<script>
+
+const text={
+
+en:{
+
+subtitle:"Something big is hidden.<br>The next update is closer than you think.",
+
+button:"Reveal Update",
+
+title:"What's Coming",
+
+map:"Interactive Map ",
+
+mapList:[
+"Better performance",
+"Hidden locations",
+"Community markers",
+"Improved UI"
+],
+
+community:"Community",
+
+communityList:[
+"Explorer profiles",
+"Teams",
+"Comments",
+"Shared discoveries"
+],
+
+secret:"More Secrets",
+
+secretText:"Some features are still classified...",
+
+progress:"Development Progress",
+
+release:"Release",
+
+releaseText:"When it's ready."
+
+},
+
+ru:{
+
+subtitle:"Что-то большое скрывается.<br>Следующее обновление уже ближе, чем кажется.",
+
+button:"Показать обновление",
+
+title:"Что нового",
+
+map:"Интерактивная карта",
+
+mapList:[
+"Более высокая производительность",
+"Скрытые локации",
+"Метки сообщества",
+"Новый интерфейс"
+],
+
+community:"Сообщество",
+
+communityList:[
+"Профили исследователей",
+"Команды",
+"Комментарии",
+"Общие находки"
+],
+
+secret:"Больше секретов",
+
+secretText:"Некоторые функции пока засекречены...",
+
+progress:"Ход разработки",
+
+release:"Релиз",
+
+releaseText:"Когда будет готово."
+
+}
+
+}
+
+function setLang(lang){
+
+const t=text[lang];
+
+subtitle.innerHTML=t.subtitle;
+
+btn.innerHTML=t.button;
+
+title1.innerHTML=t.title;
+
+mapTitle.innerHTML=t.map;
+
+communityTitle.innerHTML=t.community;
+
+secretTitle.innerHTML=t.secret;
+
+secretText.innerHTML=t.secretText;
+
+progressTitle.innerHTML=t.progress;
+
+releaseTitle.innerHTML=t.release;
+
+releaseText.innerHTML=t.releaseText;
+
+mapList.innerHTML=t.mapList.map(x=>"<li>"+x+"</li>").join("");
+
+communityList.innerHTML=t.communityList.map(x=>"<li>"+x+"</li>").join("");
+
+}
+
+</script>
+
+</body>
+</html>
