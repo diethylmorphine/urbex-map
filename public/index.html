@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>URBEX GRID</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@600;800&family=Chakra+Petch:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- hazard top strip -->
+<div class="hazard-strip"></div>
+
+<!-- profile chip -->
+<div class="hud hud-left" id="profileChip">
+  <div class="hud-name" id="hudName">—</div>
+  <div class="hud-points"><span id="hudPoints">0</span> PTS · <span id="hudTier">T0</span></div>
+  <div class="tier-meter"><div class="tier-meter-fill" id="tierFill"></div></div>
+  <div class="hud-next" id="hudNext"></div>
+</div>
+
+<!-- admin toggle -->
+<button class="hud hud-right hidden" id="adminToggle">ADMIN<br><span class="sub">MODE OFF</span></button>
+
+<!-- locked counter -->
+<div class="locked-chip hidden" id="lockedChip">🔒 <span id="lockedCount">0</span> SPOTS BEYOND YOUR CLEARANCE</div>
+
+<!-- add spot FAB -->
+<button class="fab" id="fabAdd">+ DROP SPOT</button>
+
+<!-- crosshair for placement mode -->
+<div class="crosshair hidden" id="crosshair">
+  <div class="ch-v"></div><div class="ch-h"></div><div class="ch-dot"></div>
+</div>
+<div class="place-bar hidden" id="placeBar">
+  <button class="btn ghost" id="placeCancel">CANCEL</button>
+  <div class="place-coords mono" id="placeCoords">—</div>
+  <button class="btn primary" id="placeConfirm">MARK HERE</button>
+</div>
+
+<!-- bottom sheet: new spot form -->
+<div class="sheet hidden" id="sheetForm">
+  <div class="sheet-grip"></div>
+  <div class="sheet-title">NEW SPOT</div>
+  <div class="mono coords-line" id="formCoords">—</div>
+  <input class="field" id="fTitle" maxlength="80" placeholder="Name — e.g. Abandoned boiler plant">
+  <select class="field" id="fCategory">
+    <option value="abandoned">Abandoned building</option>
+    <option value="rooftop">Rooftop</option>
+    <option value="underground">Underground / tunnels</option>
+    <option value="industrial">Industrial</option>
+    <option value="other">Other</option>
+  </select>
+  <textarea class="field" id="fDesc" maxlength="600" rows="3" placeholder="Access notes, hazards, what's inside…"></textarea>
+  <div class="form-note">Goes to admins for verification. Approved = <b id="rewardVerified">+25</b> pts.</div>
+  <div class="row">
+    <button class="btn ghost" id="formCancel">DISCARD</button>
+    <button class="btn primary" id="formSubmit">SUBMIT FOR REVIEW</button>
+  </div>
+</div>
+
+<!-- bottom sheet: location details -->
+<div class="sheet hidden" id="sheetDetail">
+  <div class="sheet-grip"></div>
+  <div class="detail-head">
+    <span class="tier-badge" id="dTier">T0</span>
+    <div class="sheet-title" id="dTitle">—</div>
+  </div>
+  <div class="mono coords-line" id="dCoords">—</div>
+  <div class="detail-meta" id="dMeta">—</div>
+  <p class="detail-desc" id="dDesc"></p>
+
+  <div class="row" id="dActions">
+    <button class="btn ghost" id="dLike">▲ LIKE (<span id="dLikes">0</span>)</button>
+    <button class="btn ghost" id="dNav">NAVIGATE ↗</button>
+  </div>
+
+  <!-- admin verify panel (pending spots only) -->
+  <div class="admin-panel hidden" id="dAdminPanel">
+    <div class="admin-panel-label">VERIFY — ASSIGN TIER</div>
+    <div class="row" id="tierButtons"></div>
+    <button class="btn danger" id="dReject">REJECT</button>
+  </div>
+
+  <div class="reviews-label">FIELD REPORTS</div>
+  <div id="reviewList"></div>
+  <div class="row">
+    <input class="field grow" id="rText" maxlength="500" placeholder="Leave a field report…">
+    <button class="btn primary" id="rSubmit">POST</button>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "rewards": {
+    "location_verified": 25,
+    "location_liked": 3,
+    "review_posted": 2,
+    "review_liked": 1
+  },
+  "tiers": [
+    { "tier": 0, "name": "STREET",     "min_points": 0   },
+    { "tier": 1, "name": "ROOFTOP",    "min_points": 50  },
+    { "tier": 2, "name": "RESTRICTED", "min_points": 150 },
+    { "tier": 3, "name": "DEEP",       "min_points": 400 }
+  ]
+}
