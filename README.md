@@ -87,9 +87,9 @@ webhook and polls; re-run `set_webhook.py` when you're done.
 },
 "tiers": [
   { "tier": 0, "name": "STREET",     "min_points": 0   },
-  { "tier": 1, "name": "ROOFTOP",    "min_points": 50  },
-  { "tier": 2, "name": "RESTRICTED", "min_points": 150 },
-  { "tier": 3, "name": "DEEP",       "min_points": 400 }
+  { "tier": 1, "name": "ROOFTOP",    "min_points": 25  },
+  { "tier": 2, "name": "RESTRICTED", "min_points": 75  },
+  { "tier": 3, "name": "DEEP",       "min_points": 150 }
 ]
 ```
 Re-read on every award. On Vercel, edits require a redeploy (file ships with

@@ -82,10 +82,16 @@
 
   <!-- admin verify panel (pending spots only) -->
   <div class="admin-panel hidden" id="dAdminPanel">
-    <div class="admin-panel-label">VERIFY — ASSIGN TIER</div>
-    <div class="row" id="tierButtons"></div>
-    <button class="btn danger" id="dReject">REJECT</button>
+    <div id="dVerifyBlock">
+      <div class="admin-panel-label">VERIFY — ASSIGN TIER</div>
+      <div class="row" id="tierButtons"></div>
+      <button class="btn danger" id="dReject">REJECT</button>
+    </div>
+    <button class="btn danger" id="dDelete">🗑 DELETE SPOT</button>
   </div>
+
+  <!-- admin delete (any spot) -->
+  <button class="btn danger hidden" id="dDelete">🗑 DELETE SPOT</button>
 
   <div class="reviews-label">FIELD REPORTS</div>
   <div id="reviewList"></div>

@@ -169,3 +169,23 @@ async def cb_reject(cb: CallbackQuery):
     except Exception:
         pass
     await cb.answer("Rejected")
+
+
+@router.callback_query(F.data.startswith("del:"))
+async def cb_delete(cb: CallbackQuery):
+    admin = await db.get_user(cb.from_user.id)
+    if not admin or not admin["is_admin"]:
+        await cb.answer("Admins only.", show_alert=True)
+        return
+    loc_id = int(cb.data.split(":")[1])
+    loc = await db.get_location(loc_id)
+    if not loc:
+        await cb.answer("Already gone.")
+        return
+    await db.delete_location(loc_id)
+    await cb.message.edit_text(cb.message.html_text + "\n\n🗑 <b>DELETED</b>")
+    try:
+        await cb.bot.send_message(loc["author_id"], f"🗑 Your spot <b>{loc['title']}</b> was removed by an admin.")
+    except Exception:
+        pass
+    await cb.answer("Deleted")

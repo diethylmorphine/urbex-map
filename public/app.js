@@ -171,30 +171,48 @@ async function openDetail(loc) {
   $("dDesc").textContent = loc.description || "No intel yet.";
   $("dLikes").textContent = loc.likes;
 
-  // admin verify panel
+  // admin panel: delete for any spot; verify block only while pending
   const panel = $("dAdminPanel");
-  if (ME.is_admin && loc.status === "pending") {
+  if (ME.is_admin) {
     panel.classList.remove("hidden");
-    const tb = $("tierButtons");
-    tb.innerHTML = "";
-    TIERS.forEach((t) => {
-      const b = document.createElement("button");
-      b.className = "btn ghost";
-      b.style.borderColor = TIER_COLORS[t.tier];
-      b.style.color = TIER_COLORS[t.tier];
-      b.textContent = `T${t.tier}`;
-      b.onclick = async () => {
-        await API.post("/api/admin/verify", { id: loc.id, tier: t.tier });
-        toast(`APPROVED AS T${t.tier}`);
-        closeSheets(); loadLocations();
-      };
-      tb.appendChild(b);
-    });
+    const verifyBlock = $("dVerifyBlock");
+    if (loc.status === "pending") {
+      verifyBlock.classList.remove("hidden");
+      const tb = $("tierButtons");
+      tb.innerHTML = "";
+      TIERS.forEach((t) => {
+        const b = document.createElement("button");
+        b.className = "btn ghost";
+        b.style.borderColor = TIER_COLORS[t.tier];
+        b.style.color = TIER_COLORS[t.tier];
+        b.textContent = `T${t.tier}`;
+        b.onclick = async () => {
+          await API.post("/api/admin/verify", { id: loc.id, tier: t.tier });
+          toast(`APPROVED AS T${t.tier}`);
+          closeSheets(); loadLocations();
+        };
+        tb.appendChild(b);
+      });
+    } else verifyBlock.classList.add("hidden");
   } else panel.classList.add("hidden");
 
   await renderReviews(loc.id);
   $("sheetDetail").classList.remove("hidden");
 }
+
+$("dDelete").onclick = () => {
+  if (!currentLoc) return;
+  const doDelete = async () => {
+    await API.post("/api/admin/delete", { id: currentLoc.id });
+    toast("SPOT DELETED");
+    closeSheets(); loadLocations();
+  };
+  if (tg.showConfirm) {
+    tg.showConfirm(`Delete "${currentLoc.title}" permanently?`, (ok) => { if (ok) doDelete(); });
+  } else if (confirm(`Delete "${currentLoc.title}" permanently?`)) {
+    doDelete();
+  }
+};
 
 $("dReject").onclick = async () => {
   if (!currentLoc) return;

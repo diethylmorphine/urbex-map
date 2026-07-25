@@ -195,6 +195,18 @@ async def api_admin_verify(request: Request, u=Depends(current_user)):
     return {"ok": True}
 
 
+@app.post("/api/admin/delete")
+async def api_admin_delete(request: Request, u=Depends(current_user)):
+    require_admin(u)
+    body = await request.json()
+    loc_id = int(body["id"])
+    loc = await db.get_location(loc_id)
+    if not loc:
+        raise HTTPException(404)
+    await db.delete_location(loc_id)
+    return {"ok": True}
+
+
 @app.post("/api/admin/reject")
 async def api_admin_reject(request: Request, u=Depends(current_user)):
     require_admin(u)
@@ -206,6 +218,23 @@ async def api_admin_reject(request: Request, u=Depends(current_user)):
     await db.reject_location(loc_id, u["tg_id"])
     try:
         await bot.send_message(loc["author_id"], f"❌ Spot <b>{loc['title']}</b> rejected.")
+    except Exception:
+        pass
+    return {"ok": True}
+
+
+@app.post("/api/admin/delete")
+async def api_admin_delete(request: Request, u=Depends(current_user)):
+    """Permanently remove a spot (any status) plus its likes and reviews."""
+    require_admin(u)
+    body = await request.json()
+    loc_id = int(body["id"])
+    loc = await db.get_location(loc_id)
+    if not loc:
+        raise HTTPException(404, "not found")
+    await db.delete_location(loc_id)
+    try:
+        await bot.send_message(loc["author_id"], f"🗑 Your spot <b>{loc['title']}</b> was removed by an admin.")
     except Exception:
         pass
     return {"ok": True}
