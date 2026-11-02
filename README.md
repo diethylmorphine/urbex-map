@@ -8,7 +8,7 @@ via REST API (httpx) · Vercel · Leaflet + CARTO dark tiles.
 
 ## Screenshot
 
-<!-- TODO: add a screenshot or GIF of the map with sample data. -->
+![URBEX GRID with sample locations](docs/screenshots/urbex-map.png)
 
 ## Data & Privacy
 
