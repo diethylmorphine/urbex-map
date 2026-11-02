@@ -31,6 +31,7 @@ BOT_TOKEN = os.environ["BOT_TOKEN"]
 WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "")
 DEV_MODE = os.environ.get("DEV_MODE") == "1"
 DEV_USER_ID = int(os.environ.get("DEV_USER_ID", "1"))
+INIT_DATA_MAX_AGE_SECONDS = int(os.environ.get("INIT_DATA_MAX_AGE_SECONDS", "86400"))
 
 bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
@@ -46,7 +47,9 @@ PUBLIC_DIR = Path(__file__).resolve().parent.parent / "public"
 async def current_user(request: Request):
     header = request.headers.get("Authorization", "")
     if header.startswith("tma "):
-        tg_user = auth.validate_init_data(header[4:], BOT_TOKEN)
+        tg_user = auth.validate_init_data(
+            header[4:], BOT_TOKEN, max_age_seconds=INIT_DATA_MAX_AGE_SECONDS,
+        )
         if tg_user:
             await db.upsert_user(tg_user["id"], tg_user.get("username"), tg_user.get("first_name"))
             return await db.get_user(tg_user["id"])
@@ -74,7 +77,7 @@ def me_payload(u) -> dict:
 
 @app.post("/api/webhook")
 async def telegram_webhook(request: Request):
-    if WEBHOOK_SECRET and request.headers.get("X-Telegram-Bot-Api-Secret-Token") != WEBHOOK_SECRET:
+    if not WEBHOOK_SECRET or request.headers.get("X-Telegram-Bot-Api-Secret-Token") != WEBHOOK_SECRET:
         raise HTTPException(401)
     update = Update.model_validate(await request.json(), context={"bot": bot})
     await dp.feed_update(bot, update)
@@ -192,18 +195,6 @@ async def api_admin_verify(request: Request, u=Depends(current_user)):
                                f"✅ Your spot <b>{loc['title']}</b> was verified (T{tier}). +{amount} pts")
     except Exception:
         pass
-    return {"ok": True}
-
-
-@app.post("/api/admin/delete")
-async def api_admin_delete(request: Request, u=Depends(current_user)):
-    require_admin(u)
-    body = await request.json()
-    loc_id = int(body["id"])
-    loc = await db.get_location(loc_id)
-    if not loc:
-        raise HTTPException(404)
-    await db.delete_location(loc_id)
     return {"ok": True}
 
 

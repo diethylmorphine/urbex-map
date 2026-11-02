@@ -118,11 +118,6 @@ async def verify_location(loc_id: int, admin_id: int, tier: int):
     })
 
 
-async def delete_location(loc_id: int):
-    # likes/reviews/review_likes go with it via ON DELETE CASCADE (schema.sql)
-    await _delete("/locations", {"id": f"eq.{loc_id}"})
-
-
 async def reject_location(loc_id: int, admin_id: int):
     await _patch("/locations", {"id": f"eq.{loc_id}"}, {
         "status": "rejected", "verified_by": admin_id, "verified_at": _now(),
