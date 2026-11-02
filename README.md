@@ -6,6 +6,14 @@ users unlock deeper tiers by earning points. Rewards live in `points_config.json
 **Stack:** aiogram 3 (webhook on prod / polling locally) · FastAPI · Supabase
 via REST API (httpx) · Vercel · Leaflet + CARTO dark tiles.
 
+## Screenshot
+
+<!-- TODO: add a screenshot or GIF of the map with sample data. -->
+
+## Data & Privacy
+
+The app stores exact location coordinates, Telegram user IDs, usernames, and first names in Supabase to support submitted spots, account points, and moderation. Spot titles, descriptions, and reviews are also visible according to the map's approval and tier rules. Do not submit private or sensitive locations. The project currently has no self-service data deletion flow; an operator must delete the user's records from Supabase, including related locations, reviews, and likes according to the foreign-key relationships in `schema.sql`.
+
 ```
 urbex-map/
 ├── api/index.py        # FastAPI — Vercel serverless function (/api/*, webhook)
@@ -48,6 +56,8 @@ python run_local.py
   fake local admin, so you can click through the whole UI without Telegram.
 - To test the real Mini App inside Telegram you still need HTTPS
   (`ngrok http 8080` → temporarily set that URL in @BotFather / WEBAPP_URL).
+
+Telegram `initData` is rejected after `INIT_DATA_MAX_AGE_SECONDS` (defaults to 86400 seconds / 24 hours). Production webhook requests are rejected if `WEBHOOK_SECRET` is unset or does not match Telegram's secret-token header.
 
 ⚠️ `DEV_MODE` disables auth. Local only. Never add it to Vercel env vars.
 
